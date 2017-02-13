@@ -41,6 +41,7 @@ def classify(data):
         raw = [tmp[0].decode('utf-8').lower() for tmp in raw]
         raw = [tmp.translate(translate_table) for tmp in raw]
         raw = [nltk.word_tokenize(tmp) for tmp in raw]
+        # FIX
         for row in raw:
             sentence_probability = 0
             for cls in xrange(c):
