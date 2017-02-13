@@ -54,8 +54,6 @@ def classify(data):
                 if sentence_probability < class_probability:
                     sentence_probability = class_probability
                     row.append(cls)
-                
-
 
 
 def unique_words_count(cls):
@@ -67,16 +65,28 @@ def unique_words_count(cls):
 
 
 def load(data):
-    # [[words],[class]]
+    # [[w1,w2,w3,w4],[class],
+    # [w1,w2,w3,w4],[class]
+    # ...]
+    # ham - 0
+    # spam - 1
     translate_table = dict((ord(char), None) for char in string.punctuation)
     with open(data) as file:
-        raw = csv.reader(file, delimiter=';')
-        raw = [[tmp[0].decode('utf-8').lower().replace('\n', ''), tmp[1]] for tmp in raw]
-        raw = [[tmp[0].translate(translate_table), tmp[1]] for tmp in raw]
-        raw = [[nltk.word_tokenize(tmp[0]), tmp[1]] for tmp in raw]
+        raw = file.readlines()
+        #raw = [tmp.strip() for tmp in raw]
+        raw = [tmp.decode('utf-8').lower().strip() for tmp in raw]
+        raw = [tmp.translate(translate_table) for tmp in raw]
+        raw = [nltk.word_tokenize(tmp) for tmp in raw]
+        raw = [[tmp, 0] for tmp in raw]
+        for i, row in enumerate(raw):
+            if row[0][0] == 'ham':
+                raw[i][1] = 0
+            if row[0][0] == 'spam':
+                raw[i][1] = 1
+            raw[i][0].pop(0)
         return raw
 
-
-data = load('data.csv')
-train(data)
-classify('input.csv')
+load_2('SMSSpamCollection.txt')
+#data = load('data.csv')
+#train(data)
+#classify('input.csv')
