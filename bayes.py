@@ -31,7 +31,6 @@ def train(data):
 
 
 def classify(data):
-<<<<<<< HEAD
     # [[w1,w2,w3], [class], [classified],
     # [w4,w5,w6], [class], [classified]]
     global matrix, sentences, N, V, c
@@ -51,32 +50,6 @@ def classify(data):
                 type = cls + 1
         data[i].append(type)
     return data
-=======
-    # [[w1,w2,w3], [w4,w5,w6]]
-    global matrix, instances, N, V, c
-    translate_table = dict((ord(char), None) for char in string.punctuation)
-    with open(data) as file:
-        raw = csv.reader(file, delimiter =';')  # [sentence, sentence, sentence ...]
-        raw = [tmp[0].decode('utf-8').lower() for tmp in raw]
-        raw = [tmp.translate(translate_table) for tmp in raw]
-        raw = [nltk.word_tokenize(tmp) for tmp in raw]
-        # FIX
-        for row in raw:
-            sentence_probability = 0
-            for cls in xrange(c):
-                unique_words = unique_words_count(cls)
-                class_probability = float(instances[cls]/N)
-                for word in row:
-                    if word in matrix:
-                        class_probability *= (matrix[word][cls] + 1)/(unique_words + V)
-                    else:
-                        class_probability *= 1/(unique_words + V)
-                if sentence_probability < class_probability:
-                    sentence_probability = class_probability
-                    row.append(cls)
-                
-
->>>>>>> e722dd237e55558cb7f88435acc5e79481d99716
 
 
 def unique_words_count(cls):
@@ -118,10 +91,6 @@ def preciseness(data):
 
 data = load('SMSSpamCollection.txt')
 train(data)
-<<<<<<< HEAD
 data = load('input.txt')
 data = classify(data)
 preciseness(data)
-=======
-classify('input.csv')
->>>>>>> e722dd237e55558cb7f88435acc5e79481d99716
